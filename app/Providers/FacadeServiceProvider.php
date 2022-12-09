@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Facades\Modular;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\ServiceProvider;
 
 class FacadeServiceProvider extends ServiceProvider
@@ -23,6 +25,6 @@ class FacadeServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        Modular::setViewsFolder();
     }
 }
