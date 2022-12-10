@@ -10,29 +10,35 @@ use Illuminate\Support\Facades\View;
 
 class Modular
 {
+
     /**
-     * Return array of Modules
+     * Return array of modules
      * 
      * @return array
      */
     public function getModules(): array
     {
-        return config('module.modules', []);
+        $modules = [];
+        foreach (config('module.modules', []) as $key => $value) {
+            if (!is_array($value)) {
+                $modules[$value] = [];
+            }
+            $modules[$key] = $value;
+        }
+        return $modules;
     }
 
     /**
-     * Return array of Paths to Modules
+     * Return Module Path
      * 
      * @return array
      */
-    public function getRoutesPath(): array
+    public function getRoutePath(string $moduleName): array
     {
-        $modules = $this->getModules();
         $routeFiles = [];
-        foreach ($modules as $module) {
-            if (File::exists($path = config('module.path') . DIRECTORY_SEPARATOR . $module . DIRECTORY_SEPARATOR . 'Routes')) {
-                $routeFiles[] = File::glob($path . DIRECTORY_SEPARATOR . '*.php');
-            }
+        $path = config('module.path') . DIRECTORY_SEPARATOR . $moduleName . DIRECTORY_SEPARATOR . 'Routes';
+        if (File::exists($path)) {
+            $routeFiles = File::glob($path . DIRECTORY_SEPARATOR . '*.php');
         }
         return $routeFiles;
     }
@@ -44,9 +50,10 @@ class Modular
      */
     public function setRoutes(): void
     {
-        $routesPath = $this->getRoutesPath();
-        foreach ($routesPath as $path) {
-            Route::group([], $path);
+        foreach ($this->getModules() as $moduleName => $data) {
+            // $moduleMiddleware = $this->getMiddleware($moduleName); Support attribute set.
+            $routePath = $this->getRoutePath($moduleName);
+            Route::group([], $routePath);
         }
     }
 
@@ -57,12 +64,24 @@ class Modular
      */
     public function setViewsFolder()
     {
-        $views = Config::get('view');
-
-        foreach ($this->getModules() as $module) {
+        $moduleNames = array_keys($this->getModules());
+        foreach ($moduleNames as $module) {
             if (is_dir($path = app_path('Modules' . DIRECTORY_SEPARATOR . $module . DIRECTORY_SEPARATOR . 'Views'))) {
                 View::addNamespace(strtolower($module), $path);
             }
         }
+    }
+
+
+    /**
+     * Get module middleware
+     *
+     * @param  string $moduleName
+     * @return array
+     */
+    public function getMiddleware(string $moduleName): array
+    {
+        $middleware = config('module.modules.' . $moduleName . '.middleware');
+        return (is_array($middleware)) ? $middleware : [$middleware];
     }
 }

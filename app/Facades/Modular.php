@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Facade;
 
 /**
  * @method static array getModules()
- * @method static array getRoutesPath()
+ * @method static array getRoutePath()
  * @method static void  setRoutes()
  * @method static void  setViewsFolder()
  * 
