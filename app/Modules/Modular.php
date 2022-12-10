@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
 use Facades\App\Contracts\Publisher;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\View;
 
 class Modular
 {
@@ -60,10 +61,8 @@ class Modular
 
         foreach ($this->getModules() as $module) {
             if (is_dir($path = app_path('Modules' . DIRECTORY_SEPARATOR . $module . DIRECTORY_SEPARATOR . 'Views'))) {
-                $views['paths'][] = $path;
+                View::addNamespace(strtolower($module), $path);
             }
         }
-
-        Config::set('view', $views);
     }
 }
