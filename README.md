@@ -27,3 +27,14 @@ Now we can run the command to build the application, after which the launch will
 > sail artisan passport:install
 
 > sail npm build
+
+# Use
+
+For create user, you need enter this command terminal, in root directory.
+
+> sail user:create (email) (password)
+
+Also you can get authorization token for frontend side by this command.
+
+> sail user:login (email) (password)
+
