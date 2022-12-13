@@ -6,7 +6,12 @@ use App\Http\Controllers\Controller;
 
 class HomeController extends Controller
 {
-    public function index()
+    /**
+     * Return view of home blade
+     *
+     * @return void
+     */
+    public function create()
     {
         return view('frontend::home');
     }

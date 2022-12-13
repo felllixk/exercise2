@@ -2,7 +2,9 @@
 
 namespace App\Modules\Frontend\Requests;
 
+use App\Rules\ValidJsonRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class CreateJsonRequest extends FormRequest
 {
@@ -13,7 +15,7 @@ class CreateJsonRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,8 +26,7 @@ class CreateJsonRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['string', 'min:5', 'max:10'],
-            'surname'   => ['string', 'min:5', 'max:10'],
+            'json' => ['required', 'json']
         ];
     }
 }

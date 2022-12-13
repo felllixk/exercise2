@@ -30,7 +30,7 @@ class LoginUserCommand extends Command
     public function handle()
     {
         $this->info('Login...');
-        Passport::tokensExpireIn(now()->addMinutes(5));
+        Passport::personalAccessTokensExpireIn(now()->addMinutes(30));
 
         $auth = Auth::attempt([
             'email'     => $this->argument('email'),

@@ -1,10 +1,12 @@
 <?php
 
-namespace App\Modules\Frontend\Requests;
+namespace App\Modules\Backend\Requests;
+
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
-class EditJsonRequest extends FormRequest
+class UpdateJsonRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,7 +15,14 @@ class EditJsonRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
+    }
+
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'id' => $this->route('id'),
+        ]);
     }
 
     /**
@@ -24,8 +33,8 @@ class EditJsonRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['string', 'min:5', 'max:10'],
-            'surname'   => ['string', 'min:5', 'max:10'],
+            'id'   => ['required', 'exists:jsons'],
+            'json' => ['required', 'json']
         ];
     }
 }

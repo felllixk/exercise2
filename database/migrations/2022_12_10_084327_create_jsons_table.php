@@ -15,8 +15,7 @@ return new class extends Migration
     {
         Schema::create('jsons', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('surname');
+            $table->json('json');
             $table->timestamps();
         });
     }

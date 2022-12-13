@@ -51,7 +51,6 @@ class Modular
     public function setRoutes(): void
     {
         foreach ($this->getModules() as $moduleName => $data) {
-            // $moduleMiddleware = $this->getMiddleware($moduleName); Support attribute set.
             $routePath = $this->getRoutePath($moduleName);
             Route::group([], $routePath);
         }
@@ -71,7 +70,6 @@ class Modular
             }
         }
     }
-
 
     /**
      * Get module middleware
